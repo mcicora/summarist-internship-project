@@ -14,7 +14,7 @@ export default function HomePage() {
             <img className="nav__img" src="/assets/logo.png" alt="logo" />
           </figure>
           <ul className="nav__list--wrapper">
-            <li className="nav__list nav__list--login"><AuthButton mode="login">Login</AuthButton></li>
+            <li className="nav__list nav__list--login"><AuthButton>Login</AuthButton></li>
             <li className="nav__list nav__list--mobile">About</li>
             <li className="nav__list nav__list--mobile">Contact</li>
             <li className="nav__list nav__list--mobile">Help</li>

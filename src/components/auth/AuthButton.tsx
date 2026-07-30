@@ -4,7 +4,8 @@ import {
   openLoginModal,
   openRegisterModal,
 } from "@/app/features/auth/authSlice";
-import { useAppDispatch } from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { useRouter } from "next/navigation";
 import type { ButtonHTMLAttributes } from "react";
 
 type AuthButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -17,23 +18,36 @@ export default function AuthButton({
   onClick,
   ...buttonProps
 }: AuthButtonProps) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+
+  const { user, isAuthLoading } = useAppSelector((state) => state.auth);
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     onClick?.(event);
 
-    if (event.defaultPrevented) {
+    if (event.defaultPrevented || isAuthLoading) {
       return;
     }
 
-    dispatch(
-      mode === "login" ? openLoginModal() : openRegisterModal(),
-    );
-  }
+    if (user) {
+      router.push("/for-you");
+      return;
+    }
 
+    if (mode === "register") {
+      dispatch(openRegisterModal());
+    } else {
+      dispatch(openLoginModal());
+    }
+  }
   return (
-    <button type="button" onClick={handleClick} {...buttonProps}>
-      {children}
-    </button>
-  );
+  <button
+    type="button"
+    onClick={handleClick}
+    {...buttonProps}
+  >
+    {children}
+  </button>
+);
 }
