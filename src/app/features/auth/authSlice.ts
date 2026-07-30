@@ -1,15 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 type AuthModalMode = "login" | "register";
+
+export type AuthUser = {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+};
 
 type AuthState = {
   isModalOpen: boolean;
   modalMode: AuthModalMode;
+  user: AuthUser | null;
+  isAuthLoading: boolean;
 };
 
 const initialState: AuthState = {
   isModalOpen: false,
   modalMode: "login",
+  user: null,
+  isAuthLoading: true,
 };
 
 const authSlice = createSlice({
@@ -37,6 +48,11 @@ const authSlice = createSlice({
     showRegister(state) {
       state.modalMode = "register";
     },
+
+    setAuthUser(state, action: PayloadAction<AuthUser | null>) {
+      state.user = action.payload;
+      state.isAuthLoading = false;
+    },
   },
 });
 
@@ -46,6 +62,7 @@ export const {
   closeAuthModal,
   showLogin,
   showRegister,
+  setAuthUser,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -105,11 +105,6 @@ export default function AuthModal() {
     };
   }, [dispatch, isModalOpen]);
 
-  useEffect(() => {
-    setErrorMessage("");
-    setPassword("");
-  }, [modalMode]);
-
   function handleAuthenticationSuccess() {
     setEmail("");
     setPassword("");
@@ -188,6 +183,7 @@ export default function AuthModal() {
 
   function handleModeChange() {
     setErrorMessage("");
+    setPassword("");
 
     if (isLogin) {
       dispatch(showRegister());

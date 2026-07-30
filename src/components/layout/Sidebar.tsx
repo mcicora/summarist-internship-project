@@ -11,6 +11,12 @@ import {
   FiSettings,
   FiStar,
 } from "react-icons/fi";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
+import { openLoginModal } from "@/app/features/auth/authSlice";
+import { auth } from "@/lib/firebase";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 type SidebarItem = {
   label: string;
@@ -46,14 +52,23 @@ const sidebarItems: SidebarItem[] = [
     label: "Help & Support",
     icon: <FiHelpCircle />,
   },
-  {
-    label: "Login",
-    icon: <FiLogIn />,
-  },
 ];
 
 export default function Sidebar() {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const { user, isAuthLoading } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
+
+  async function handleLogout() {
+    try {
+      await signOut(auth);
+      router.push("/");
+    } catch (error) {
+      console.error("Unable to sign out:", error);
+    }
+  }
 
   return (
     <aside className="sidebar">
@@ -91,12 +106,53 @@ export default function Sidebar() {
                   }`}
                   href={item.href}
                 >
-                    <span className="sidebar__icon">{item.icon}</span>
-                    <span>{item.label}</span>
+                  <span className="sidebar__icon">{item.icon}</span>
+                  <span>{item.label}</span>
                 </Link>
               </li>
             );
           })}
+        </ul>
+        <ul className="sidebar__list">
+          <li>
+            {isAuthLoading ? (
+              <button
+                className="sidebar__item sidebar__item--disabled"
+                type="button"
+                disabled
+              >
+                <span className="sidebar__icon">
+                  <FiLogIn />
+                </span>
+
+                <span>Loading...</span>
+              </button>
+            ) : user ? (
+              <button
+                className="sidebar__item"
+                type="button"
+                onClick={handleLogout}
+              >
+                <span className="sidebar__icon">
+                  <FiLogIn />
+                </span>
+
+                <span>Logout</span>
+              </button>
+            ) : (
+              <button
+                className="sidebar__item"
+                type="button"
+                onClick={() => dispatch(openLoginModal())}
+              >
+                <span className="sidebar__icon">
+                  <FiLogIn />
+                </span>
+
+                <span>Login</span>
+              </button>
+            )}
+          </li>
         </ul>
       </nav>
     </aside>

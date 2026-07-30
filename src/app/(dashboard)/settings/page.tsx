@@ -2,6 +2,8 @@
 
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
+
+import AuthStatus from "@/components/auth/AuthStatus";
 import { auth } from "@/lib/firebase";
 
 export default function SettingsPage() {
@@ -19,6 +21,8 @@ export default function SettingsPage() {
   return (
     <section>
       <h1>Settings</h1>
+
+      <AuthStatus />
 
       <button type="button" onClick={handleLogout}>
         Logout
