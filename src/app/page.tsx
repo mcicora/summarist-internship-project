@@ -2,6 +2,7 @@ import { AiFillAudio, AiFillBulb, AiFillFileText } from "react-icons/ai";
 import { BiCrown } from "react-icons/bi";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
 import { RiLeafLine } from "react-icons/ri";
+import AuthButton from "@/components/auth/AuthButton";
 
 
 export default function HomePage() {
@@ -13,7 +14,7 @@ export default function HomePage() {
             <img className="nav__img" src="/assets/logo.png" alt="logo" />
           </figure>
           <ul className="nav__list--wrapper">
-            <li className="nav__list nav__list--login">Login</li>
+            <li className="nav__list nav__list--login"><AuthButton mode="login">Login</AuthButton></li>
             <li className="nav__list nav__list--mobile">About</li>
             <li className="nav__list nav__list--mobile">Contact</li>
             <li className="nav__list nav__list--mobile">Help</li>
@@ -36,7 +37,7 @@ export default function HomePage() {
                   <br className="remove--tablet" />
                   and even people who don’t like to read.
                 </div>
-                <button className="btn home__cta--btn">Login</button>
+                <AuthButton className="btn home__cta--btn">Login</AuthButton>
               </div>
               <figure className="landing__image--mask">
                 <img src="/assets/landing.png" alt="landing" />
@@ -172,6 +173,10 @@ export default function HomePage() {
                   <div className="review__name">Hanna M.</div>
                   <div className="review__stars">
                     <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
                   </div>
                 </div>
                 <div className="review__body">
@@ -184,6 +189,10 @@ export default function HomePage() {
                 <div className="review__header">
                   <div className="review__name">David B.</div>
                   <div className="review__stars">
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
                     <BsStarFill />
                   </div>
                 </div>
@@ -199,6 +208,10 @@ export default function HomePage() {
                   <div className="review__name">Nathan S.</div>
                   <div className="review__stars">
                     <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
                   </div>
                 </div>
                 <div className="review__body">
@@ -213,6 +226,10 @@ export default function HomePage() {
                   <div className="review__name">Ryan R.</div>
                   <div className="review__stars">
                     <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
+                    <BsStarFill />
                   </div>
                 </div>
                 <div className="review__body">
@@ -224,7 +241,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="reviews__btn--wrapper">
-              <button className="btn home__cta--btn">Login</button>
+              <AuthButton className="btn home__cta--btn">Login</AuthButton>
             </div>
           </div>
         </div>
@@ -247,6 +264,9 @@ export default function HomePage() {
               </div>
               <div className="numbers">
                 <div className="numbers__icon numbers__star--icon">
+                  <BsStarFill />
+                  <BsStarFill />
+                  <BsStarFill />
                   <BsStarFill />
                   <BsStarHalf />
                 </div>

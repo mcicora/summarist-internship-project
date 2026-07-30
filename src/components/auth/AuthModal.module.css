@@ -1,0 +1,126 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(0 0 0 / 55%);
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 40px 32px 32px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 25%);
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #032b41;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.title {
+  margin-bottom: 24px;
+  color: #032b41;
+  font-size: 24px;
+  text-align: center;
+}
+
+.googleButton,
+.submitButton {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.googleButton {
+  background: #4285f4;
+  color: #ffffff;
+}
+
+.submitButton {
+  margin-top: 8px;
+  background: #2bd97c;
+  color: #032b41;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: #6b757b;
+}
+
+.divider::before,
+.divider::after {
+  flex: 1;
+  height: 1px;
+  background: #d8dfe3;
+  content: "";
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form label {
+  color: #032b41;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #bac4ca;
+  border-radius: 6px;
+  color: #032b41;
+  font-size: 16px;
+}
+
+.form input:focus {
+  border-color: #032b41;
+  outline: 2px solid rgb(3 43 65 / 15%);
+}
+
+.switchButton {
+  display: block;
+  margin: 22px auto 0;
+  border: 0;
+  background: transparent;
+  color: #53636b;
+  cursor: pointer;
+}
+
+.switchButton strong {
+  color: #116be9;
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 40px 20px 28px;
+  }
+}
