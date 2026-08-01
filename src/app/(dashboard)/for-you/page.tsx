@@ -1,4 +1,5 @@
 import BookCard from "@/components/books/BookCard";
+import BookRow from "@/components/books/BookRow";
 import {
   getRecommendedBooks,
   getSelectedBooks,
@@ -29,29 +30,19 @@ export default async function ForYouPage() {
       </section>
 
       <section className="for-you__section">
-        <h2 className="for-you__section-title">Recommended For You</h2>
-
-        <p className="for-you__section-subtitle">We think you’ll like these</p>
-
-        <div className="book-row">
-          {recommendedBooks.map((book) => (
-            <BookCard key={book.id} book={book} />
-          ))}
-        </div>
+        <BookRow
+          title="Recommended For You"
+          subtitle="Books we think you'll enjoy"
+          books={recommendedBooks}
+        />
       </section>
-      
+
       <section className="for-you__section">
-        <h2 className="for-you__section-title">Suggested Books</h2>
-
-        <p className="for-you__section-subtitle">
-          Browse books we think you’ll enjoy
-        </p>
-
-        <div className="book-row">
-          {suggestedBooks.map((book) => (
-            <BookCard key={book.id} book={book} />
-          ))}
-        </div>
+        <BookRow
+          title="Suggested Books"
+          subtitle="Browse more books selected for you"
+          books={suggestedBooks}
+        />
       </section>
     </section>
   );

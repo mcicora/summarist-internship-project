@@ -23,6 +23,7 @@ export default function AuthObserver() {
           email: firebaseUser.email,
           displayName: firebaseUser.displayName,
           photoURL: firebaseUser.photoURL,
+          isAnonymous: firebaseUser.isAnonymous,
         }),
       );
     });

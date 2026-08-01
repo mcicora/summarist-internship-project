@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "@/app/features/auth/authSlice";
+import readerReducer from "@/app/features/readerSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
+      reader: readerReducer,
     },
   });
 };

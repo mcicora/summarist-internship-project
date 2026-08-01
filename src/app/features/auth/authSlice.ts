@@ -7,6 +7,7 @@ export type AuthUser = {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
+  isAnonymous: boolean;
 };
 
 type AuthState = {

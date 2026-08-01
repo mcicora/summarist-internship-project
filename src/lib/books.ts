@@ -1,4 +1,5 @@
 import type { Book } from "@/types/book";
+import { notFound } from "next/navigation";
 
 const API_URL = "https://us-central1-summaristt.cloudfunctions.net/getBooks";
 
@@ -36,6 +37,10 @@ export async function getBookById(id: string): Promise<Book> {
   const response = await fetch(
     `https://us-central1-summaristt.cloudfunctions.net/getBook?id=${id}`,
   );
+
+  if (response.status === 404) {
+    notFound();
+  }
 
   if (!response.ok) {
     throw new Error("Unable to load the book.");

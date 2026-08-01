@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInAnonymously,
 } from "firebase/auth";
 
 import {
@@ -16,10 +17,7 @@ import {
   showRegister,
 } from "@/app/features/auth/authSlice";
 import { auth } from "@/lib/firebase";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 import styles from "./AuthModal.module.css";
 
@@ -74,9 +72,7 @@ export default function AuthModal() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { isModalOpen, modalMode } = useAppSelector(
-    (state) => state.auth,
-  );
+  const { isModalOpen, modalMode } = useAppSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -114,9 +110,21 @@ export default function AuthModal() {
     router.push("/for-you");
   }
 
-  async function handleEmailSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function handleGuestLogin() {
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    try {
+      await signInAnonymously(auth);
+      handleAuthenticationSuccess();
+    } catch (error) {
+      setErrorMessage(getFirebaseErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const trimmedEmail = email.trim();
@@ -132,9 +140,7 @@ export default function AuthModal() {
     }
 
     if (!isLogin && password.length < 6) {
-      setErrorMessage(
-        "Your password must contain at least six characters.",
-      );
+      setErrorMessage("Your password must contain at least six characters.");
       return;
     }
 
@@ -143,17 +149,9 @@ export default function AuthModal() {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(
-          auth,
-          trimmedEmail,
-          password,
-        );
+        await signInWithEmailAndPassword(auth, trimmedEmail, password);
       } else {
-        await createUserWithEmailAndPassword(
-          auth,
-          trimmedEmail,
-          password,
-        );
+        await createUserWithEmailAndPassword(auth, trimmedEmail, password);
       }
 
       handleAuthenticationSuccess();
@@ -201,10 +199,7 @@ export default function AuthModal() {
       className={styles.overlay}
       role="presentation"
       onMouseDown={(event) => {
-        if (
-          event.target === event.currentTarget &&
-          !isSubmitting
-        ) {
+        if (event.target === event.currentTarget && !isSubmitting) {
           dispatch(closeAuthModal());
         }
       }}
@@ -225,14 +220,22 @@ export default function AuthModal() {
           ×
         </button>
 
-        <h2
-          id="auth-modal-title"
-          className={styles.title}
-        >
-          {isLogin
-            ? "Log in to Summarist"
-            : "Sign up for Summarist"}
+        <h2 id="auth-modal-title" className={styles.title}>
+          {isLogin ? "Log in to Summarist" : "Sign up for Summarist"}
         </h2>
+
+        <button
+          className="guestButton"
+          type="button"
+          disabled={isSubmitting}
+          onClick={handleGuestLogin}
+        >
+          Continue as Guest
+        </button>
+
+         <div className={styles.divider}>
+          <span>or</span>
+        </div>
 
         <button
           className={styles.googleButton}
@@ -240,19 +243,14 @@ export default function AuthModal() {
           disabled={isSubmitting}
           onClick={handleGoogleSignIn}
         >
-          {isSubmitting
-            ? "Please wait..."
-            : "Continue with Google"}
+          {isSubmitting ? "Please wait..." : "Continue with Google"}
         </button>
 
         <div className={styles.divider}>
           <span>or</span>
         </div>
 
-        <form
-          className={styles.form}
-          onSubmit={handleEmailSubmit}
-        >
+        <form className={styles.form} onSubmit={handleEmailSubmit}>
           <label htmlFor="auth-email">Email</label>
 
           <input
@@ -278,11 +276,7 @@ export default function AuthModal() {
             type="password"
             value={password}
             placeholder="Enter your password"
-            autoComplete={
-              isLogin
-                ? "current-password"
-                : "new-password"
-            }
+            autoComplete={isLogin ? "current-password" : "new-password"}
             disabled={isSubmitting}
             required
             minLength={6}
@@ -293,10 +287,7 @@ export default function AuthModal() {
           />
 
           {errorMessage && (
-            <p
-              className={styles.errorMessage}
-              role="alert"
-            >
+            <p className={styles.errorMessage} role="alert">
               {errorMessage}
             </p>
           )}
@@ -320,13 +311,9 @@ export default function AuthModal() {
           disabled={isSubmitting}
           onClick={handleModeChange}
         >
-          {isLogin
-            ? "Don't have an account?"
-            : "Already have an account?"}
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
 
-          <strong>
-            {isLogin ? " Sign up" : " Login"}
-          </strong>
+          <strong>{isLogin ? " Sign up" : " Login"}</strong>
         </button>
       </section>
     </div>

@@ -3,7 +3,7 @@ import { BiCrown } from "react-icons/bi";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
 import { RiLeafLine } from "react-icons/ri";
 import AuthButton from "@/components/auth/AuthButton";
-
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -14,7 +14,9 @@ export default function HomePage() {
             <img className="nav__img" src="/assets/logo.png" alt="logo" />
           </figure>
           <ul className="nav__list--wrapper">
-            <li className="nav__list nav__list--login"><AuthButton>Login</AuthButton></li>
+            <li className="nav__list nav__list--login">
+              <AuthButton>Login</AuthButton>
+            </li>
             <li className="nav__list nav__list--mobile">About</li>
             <li className="nav__list nav__list--mobile">Contact</li>
             <li className="nav__list nav__list--mobile">Help</li>
@@ -37,7 +39,15 @@ export default function HomePage() {
                   <br className="remove--tablet" />
                   and even people who don’t like to read.
                 </div>
-                <AuthButton className="btn home__cta--btn">Login</AuthButton>
+                <div className="landing__buttons">
+                  <button className="btn" type="button">
+                    Login
+                  </button>
+
+                  <Link className="btn" href="/choose-plan">
+                    View plans
+                  </Link>
+                </div>
               </div>
               <figure className="landing__image--mask">
                 <img src="/assets/landing.png" alt="landing" />
@@ -180,9 +190,9 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="review__body">
-                  This app has been a <b>game-changer</b> for me! It&apos;s saved me
-                  so much time and effort in reading and comprehending books.
-                  Highly recommend it to all book lovers.
+                  This app has been a <b>game-changer</b> for me! It&apos;s
+                  saved me so much time and effort in reading and comprehending
+                  books. Highly recommend it to all book lovers.
                 </div>
               </div>
               <div className="review">
@@ -234,9 +244,10 @@ export default function HomePage() {
                 </div>
                 <div className="review__body">
                   If you&apos;re a busy person who
-                  <b>loves reading but doesn&apos;t have the time</b> to read every
-                  book in full, this app is for you! The summaries are thorough
-                  and provide a great overview of the book&apos;s content.
+                  <b>loves reading but doesn&apos;t have the time</b> to read
+                  every book in full, this app is for you! The summaries are
+                  thorough and provide a great overview of the book&apos;s
+                  content.
                 </div>
               </div>
             </div>

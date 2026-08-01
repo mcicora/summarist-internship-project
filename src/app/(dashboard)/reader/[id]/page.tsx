@@ -1,3 +1,5 @@
+import BackToBooksLink from "@/components/books/BackToBooksLink";
+import ReaderView from "@/components/reader/ReaderView";
 import { getBookById } from "@/lib/books";
 
 type ReaderPageProps = {
@@ -13,24 +15,15 @@ export default async function ReaderPage({
   const book = await getBookById(id);
 
   return (
-    <article className="reader-page">
-      <header className="reader-page__header">
-        <img
-          className="reader-page__image"
-          src={book.imageLink}
-          alt={`Cover of ${book.title}`}
-        />
+    <>
+      <BackToBooksLink />
 
-        <div>
-          <h1>{book.title}</h1>
-          <p>{book.author}</p>
-        </div>
-      </header>
-
-      <section className="reader-page__summary">
-        <h2>Book Summary</h2>
-        <p>{book.summary}</p>
-      </section>
-    </article>
+      <ReaderView
+        title={book.title}
+        author={book.author}
+        imageLink={book.imageLink}
+        summary={book.summary}
+      />
+    </>
   );
 }

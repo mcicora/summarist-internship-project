@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 import {
   FiBookOpen,
   FiHelpCircle,
@@ -17,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { openLoginModal } from "@/app/features/auth/authSlice";
 import { auth } from "@/lib/firebase";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { setFontSize } from "@/app/features/readerSlice";
 
 type SidebarItem = {
   label: string;
@@ -41,8 +43,12 @@ const sidebarItems: SidebarItem[] = [
   },
   {
     label: "Search",
+    href: "/search",
     icon: <FiSearch />,
   },
+];
+
+const bottomSidebarItems: SidebarItem[] = [
   {
     label: "Settings",
     href: "/settings",
@@ -60,6 +66,10 @@ export default function Sidebar() {
 
   const { user, isAuthLoading } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
+
+  const fontSize = useAppSelector((state) => state.reader.fontSize);
+
+  const isReaderPage = pathname.startsWith("/reader/");
 
   async function handleLogout() {
     try {
@@ -99,21 +109,88 @@ export default function Sidebar() {
             }
 
             return (
-              <li key={item.label}>
-                <Link
-                  className={`sidebar__item ${
-                    isActive ? "sidebar__item--active" : ""
-                  }`}
-                  href={item.href}
-                >
-                  <span className="sidebar__icon">{item.icon}</span>
-                  <span>{item.label}</span>
-                </Link>
-              </li>
+              <Fragment key={item.label}>
+                <li>
+                  <Link
+                    className={`sidebar__item ${
+                      isActive ? "sidebar__item--active" : ""
+                    }`}
+                    href={item.href}
+                  >
+                    <span className="sidebar__icon">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                </li>
+
+                {item.label === "Search" && isReaderPage && (
+                  <li>
+                    <div
+                      className="sidebar__font-controls"
+                      aria-label="Reader font size"
+                    >
+                      {[14, 18, 22, 26].map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          className={`sidebar__font-button ${
+                            fontSize === size
+                              ? "sidebar__font-button--active"
+                              : ""
+                          }`}
+                          aria-label={`${
+                            size === 14
+                              ? "Small"
+                              : size === 18
+                                ? "Medium"
+                                : size === 22
+                                  ? "Large"
+                                  : "Extra-large"
+                          } font size`}
+                          aria-pressed={fontSize === size}
+                          onClick={() => dispatch(setFontSize(size))}
+                        >
+                          <span style={{ fontSize: `${size}px` }}>Aa</span>
+                        </button>
+                      ))}
+                    </div>
+                  </li>
+                )}
+              </Fragment>
             );
           })}
         </ul>
-        <ul className="sidebar__list">
+        <ul className="sidebar__list sidebar__list--bottom">
+          {bottomSidebarItems.map((item) => {
+            const isActive =
+              item.href !== undefined &&
+              (pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+            return (
+              <li key={item.label}>
+                {item.href ? (
+                  <Link
+                    className={`sidebar__item ${
+                      isActive ? "sidebar__item--active" : ""
+                    }`}
+                    href={item.href}
+                  >
+                    <span className="sidebar__icon">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                ) : (
+                  <button
+                    className="sidebar__item sidebar__item--disabled"
+                    type="button"
+                    disabled
+                  >
+                    <span className="sidebar__icon">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </button>
+                )}
+              </li>
+            );
+          })}
+
           <li>
             {isAuthLoading ? (
               <button

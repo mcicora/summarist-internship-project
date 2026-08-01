@@ -11,18 +11,32 @@ export default function BookCard({ book }: BookCardProps) {
       className="book-card"
       href={`/book/${book.id}`}
     >
-      <img
-        className="book-card__image"
-        src={book.imageLink}
-        alt={`Cover of ${book.title}`}
-      />
+      <div className="book-card__image-wrapper">
+        <img
+          className="book-card__image"
+          src={book.imageLink}
+          alt={`Cover of ${book.title}`}
+        />
+
+        {book.subscriptionRequired && (
+          <span className="book-card__premium">
+            Premium
+          </span>
+        )}
+      </div>
 
       <div className="book-card__content">
-        <h3 className="book-card__title">{book.title}</h3>
+        <h3 className="book-card__title">
+          {book.title}
+        </h3>
 
-        <p className="book-card__author">{book.author}</p>
+        <p className="book-card__author">
+          {book.author}
+        </p>
 
-        <p className="book-card__subtitle">{book.subTitle}</p>
+        <p className="book-card__subtitle">
+          {book.subTitle}
+        </p>
       </div>
     </Link>
   );

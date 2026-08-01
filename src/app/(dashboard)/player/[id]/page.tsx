@@ -1,3 +1,5 @@
+import AudioPlayer from "../AudioPlayer";
+import BackToBooksLink from "@/components/books/BackToBooksLink";
 import { getBookById } from "@/lib/books";
 
 type PlayerPageProps = {
@@ -6,34 +8,29 @@ type PlayerPageProps = {
   }>;
 };
 
-export default async function PlayerPage({
-  params,
-}: PlayerPageProps) {
+export default async function PlayerPage({ params }: PlayerPageProps) {
   const { id } = await params;
   const book = await getBookById(id);
 
   return (
-    <section className="player-page">
-      <img
-        className="player-page__image"
-        src={book.imageLink}
-        alt={`Cover of ${book.title}`}
-      />
+    <>
+      <BackToBooksLink />
 
-      <div className="player-page__content">
-        <h1>{book.title}</h1>
+      <section className="player-page">
+        <div className="player-page__content">
+          <h1>{book.title}</h1>
 
-        <p className="player-page__author">{book.author}</p>
+          <p className="player-page__author">{book.author}</p>
 
-        <audio
-          className="player-page__audio"
-          src={book.audioLink}
-          controls
-        >
-          Your browser does not support audio playback.
-        </audio>
-      </div>
-    </section>
+          <AudioPlayer audioUrl={book.audioLink} bookId={book.id} />
+
+          <section className="player-page__summary">
+            <h2>Book Summary</h2>
+
+            <p>{book.summary}</p>
+          </section>
+        </div>
+      </section>
+    </>
   );
 }
-
