@@ -40,11 +40,8 @@ export default function HomePage() {
                   and even people who don’t like to read.
                 </div>
                 <div className="landing__buttons">
-                  <button className="btn" type="button">
-                    Login
-                  </button>
-
-                  <Link className="btn" href="/choose-plan">
+                  <AuthButton className="btn home__cta--btn">Login</AuthButton>
+                  <Link className="btn home__cta--btn" href="/choose-plan">
                     View plans
                   </Link>
                 </div>

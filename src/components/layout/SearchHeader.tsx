@@ -1,31 +1,44 @@
 "use client";
-import { useState } from "react";
+
+import { type FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FiSearch } from "react-icons/fi";
 
 export default function SearchHeader() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
-  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-  event.preventDefault();
-
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
     const trimmedSearch = search.trim();
 
     if (!trimmedSearch) {
+      router.push("/search");
       return;
     }
 
-    console.log("Search Submitted:", trimmedSearch);
+    router.push(
+      `/search?query=${encodeURIComponent(trimmedSearch)}`,
+    );
   }
 
   return (
     <header className="search-header">
-      <form onSubmit={handleSubmit} role="search" className="search-form">
-        <label htmlFor="book-search" className="sr-only">
+      <form
+        onSubmit={handleSubmit}
+        role="search"
+        className="search-form"
+      >
+        <label
+          htmlFor="header-book-search"
+          className="sr-only"
+        >
           Search by title or author
         </label>
 
         <input
+          id="header-book-search"
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -37,7 +50,7 @@ export default function SearchHeader() {
         <button
           className="search-form__button"
           type="submit"
-          aria-label="Submit Search"
+          aria-label="Submit search"
         >
           <FiSearch aria-hidden="true" />
         </button>
