@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 
+import { createCheckoutSession } from "@/app/choose-plan/actions";
+import CheckoutButton from "@/components/plans/CheckoutButton";
+
 type PlanType = "monthly" | "yearly";
 
 export default function ChoosePlan() {
   const [selectedPlan, setSelectedPlan] = useState<PlanType>("yearly");
   const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(null);
-  const [checkoutMessage, setCheckoutMessage] = useState("");
-  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
 
   type FAQItem = {
     question: string;
@@ -37,25 +38,6 @@ export default function ChoosePlan() {
       answer: "Yes. You can select either option before beginning checkout.",
     },
   ];
-
-  async function handleCheckout() {
-    setCheckoutMessage("");
-    setIsCheckoutLoading(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    if (selectedPlan === "yearly") {
-      setCheckoutMessage(
-        "Your yearly plan is selected. Stripe checkout will be connected in the next payment step.",
-      );
-    } else {
-      setCheckoutMessage(
-        "Your monthly plan is selected. Stripe checkout will be connected in the next payment step.",
-      );
-    }
-
-    setIsCheckoutLoading(false);
-  }
 
   function toggleFAQ(index: number) {
     setOpenFAQIndex((currentIndex) => (currentIndex === index ? null : index));
@@ -101,7 +83,6 @@ export default function ChoosePlan() {
               aria-pressed={selectedPlan === "yearly"}
               onClick={() => {
                 setSelectedPlan("yearly");
-                setCheckoutMessage("");
               }}
             >
               <span className="plan-option__badge">7-day free trial</span>
@@ -123,7 +104,6 @@ export default function ChoosePlan() {
               aria-pressed={selectedPlan === "monthly"}
               onClick={() => {
                 setSelectedPlan("monthly");
-                setCheckoutMessage("");
               }}
             >
               <span className="plan-option__heading">Premium Monthly</span>
@@ -136,28 +116,13 @@ export default function ChoosePlan() {
             </button>
           </div>
 
-          <button
-            type="button"
-            className="choose-plan__checkout"
-            disabled={isCheckoutLoading}
-            onClick={handleCheckout}
-          >
-            {isCheckoutLoading
-              ? "Preparing checkout..."
-              : selectedPlan === "yearly"
-                ? "Start your free trial"
-                : "Get Premium"}
-          </button>
-
-          {checkoutMessage ? (
-            <p className="choose-plan__checkout-message" role="status">
-              {checkoutMessage}
-            </p>
-          ) : (
+          <form action={createCheckoutSession}>
+            <input type="hidden" name="plan" value={selectedPlan} />
+            <CheckoutButton selectedPlan={selectedPlan} />
             <p className="choose-plan__notice">
-              You will not be charged during this setup stage.
+              Secure checkout powered by Stripe. Cancel anytime.
             </p>
-          )}
+          </form>
         </div>
       </section>
       <section className="choose-plan__faq">
